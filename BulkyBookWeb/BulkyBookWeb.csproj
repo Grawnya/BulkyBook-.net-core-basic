@@ -1,9 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
+<!--Framework Info-->
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+	
+	<!--In some demos, the mvc type is included here, but future versions of
+	.net core include all of this in the bg so don't put it here anymore
+	
+	All packages and nuGet files are placed here-->
 
 </Project>
