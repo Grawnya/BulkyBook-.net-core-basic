@@ -9,6 +9,6 @@
 	<!--In some demos, the mvc type is included here, but future versions of
 	.net core include all of this in the bg so don't put it here anymore
 	
-	All packages and nuGet files are placed here-->
+	All packages and NuGet files are placed here-->
 
 </Project>

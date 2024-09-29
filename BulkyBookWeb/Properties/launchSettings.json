@@ -17,7 +17,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express": {
+    //If there is no applicationUrl inside a profile, the default use 
+    //will be the sslPort in the iisSettings above
+      "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
