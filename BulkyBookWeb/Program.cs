@@ -21,8 +21,8 @@ app.UseRouting();
 //app.UseAuthentication(); // should be used here to check if user is legit - order matters
 app.UseAuthorization(); // can only authorise an authentic user
 
-app.MapControllerRoute(
+app.MapControllerRoute( // this is only used if there is no controller or action in the proper route
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"); // controller and action are not optional with default values; only id is optional
 
 app.Run();

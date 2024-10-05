@@ -6,6 +6,7 @@ namespace BulkyBookWeb.Controllers
 {
     public class HomeController : Controller
     {
+        // dependency injection is used to create the logger - inheriting from the controller class
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -13,9 +14,10 @@ namespace BulkyBookWeb.Controllers
             _logger = logger;
         }
 
+        // the action methods for each page in the Home Views folder need to be created
         public IActionResult Index()
         {
-            return View();
+            return View(); // loads content
         }
 
         public IActionResult Privacy()
