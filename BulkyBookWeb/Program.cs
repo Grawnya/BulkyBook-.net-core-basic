@@ -1,8 +1,13 @@
+using BulkyBookWeb.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container e.g. register an email or DB context.
 // The below service is used to create the MVC object. Razor pages would be different.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection"))); // this method will only look in the json item called "ConnectionStrings"
 
 var app = builder.Build();
 
