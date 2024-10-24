@@ -6,8 +6,13 @@
    * [Routing and Default Files](#routing-and-default-files)
    * [Tag Helpers and Actions](#tag-helpers-and-actions)
    * [Hot Reload](#hot-reload)
-3. [Database](#database)
+* [Database](#database)
    * [Model Creation](#model-creation)
+   * [Connection to SSMS](#connection-to-ssms)
+   * [Run the Migration to SSMS](#run-the-migration-to-ssms)
+* [Category CRUD Operations](#category-crud-operations)
+   * [Dealing with the Category Controller](#dealing-with-the-category-controller)
+   * [Entity Framework Core](#entity-framework-core)
 
 ---
 
@@ -63,7 +68,7 @@ Details of creating the model in the project.
 Details of how to create a DB inside of SSMS without manually creating it.
 
 **Key points**:
-- The connection string should be included in "appsettings.json" rather than hardcoded somewhere in the main project.
+- The connection string should be included in `appsettings.json` rather than hardcoded somewhere in the main project.
 - As connecting is so common, the log name is "ConnectionStrings". "DefaultConnection" is to set up the default database connection.
 - Input the server name as it is found in SSMS and the name of the database you want to create.
 - To separate json items here, include a ";" inbetween each value.
@@ -88,3 +93,35 @@ Details of how to migrate the tables and databases for the first time to SSMS.
 - A "Migrations" folder has been created which shows all migrations made.
 - 2 methods are found in each migration - the Up method is what needs to happen inside the migration, whereas the Down method is if something goes down, the changes need to be rolled back.
 - If you agree with the migration, then you can push it to the dm with `update-database`.
+
+## Category CRUD Operations
+### Dealing with the Category Controller
+Details of how to create a controller for a category.
+
+**Key points**:
+- For creating a controller, add an empty Mvc application to the "Controller" folder and make sure to add "Controller" add the end of the name, as this is a requirement for the system.
+- Each controller pages has an index action, but for the home controller, it has its own page called `index.cshtml`. Just replicate this with a Views page of the same start name of the controller and add an "index" page. You can also right click on the controller over the `Index()` part and click "Add View..:".
+- Select the Razor View option, which is not empty, but when inside the razor view menu, select Template "Empty (without model)" at the start, but there are "Create", "Delete" etc. templates which are of use.
+- A partial view (reusable components that allow you to render a portion of HTML content within a larger view e.g. nav bar) can also be selected but it does not let you use a layout page, but this is not done at this stage.
+- Use a layout page - which, if left blank, uses the default settings in the "Shared" folder.
+- By clicking "Add", it will scan for view dependencies and then will create the view inside a new suitable folder.
+- In `_Layout.cshtml`, add the page as `<a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>` with the controller name and the index is the action.
+- Note: I am doing this part without the connection to my SSMS DB, so can't add or test dummy data.
+
+### Entity Framework Core
+Details of how to use entity framework core to deal with data.
+
+**Key points**:
+- Due to dependency injection, we do not need to create an object of our Categories Model, which is seen in `Program.cs` where a service "AddDbContext" acts as if it is sending the object.
+- Create a `private readonly` var to save any database context associated with the controller locally. Due to dependency injection, we can call a class with the `ApplicationDbContext` type as this was declared as a service at the start.
+- Convert the database table called Categories' records into a list and this can be returned via the view, as seen in `CategoryController.cs`, but it also needs to be added to the relevant `index.cshtml` view.
+- In the relevant view page, we need to capture the model from the controller `@model IEnumerable<Category>`, where model needs to be in lowercase and the type given is the type the database table is in the controller.
+- We can call these model values, by using C# in the view page where @ allows for some C# and when calling the model, it should now start with an uppercase "M".
+- You can call the object table columns by just putting an "@" at the start.
+
+### Dealing with the Category View
+Details of how to create a view for a category.
+
+**Key points**:
+- Note: If editing the razor pages, will have to add `AddRazorRuntimeCompilation()` to show the immediate reflection of changes during development without having to restart the app. If this does not appear - make sure you have the "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" NuGet package.
+- Bootswatch creates themes from bootstrap, which will help with styling - will skip this section of the project.
