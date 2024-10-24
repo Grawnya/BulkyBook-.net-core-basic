@@ -13,6 +13,8 @@
 * [Category CRUD Operations](#category-crud-operations)
    * [Dealing with the Category Controller](#dealing-with-the-category-controller)
    * [Entity Framework Core](#entity-framework-core)
+   * [Dealing with the Category View](#dealing-with-the-category-view)
+   * [Validation](#validation)
 
 ---
 
@@ -124,4 +126,21 @@ Details of how to create a view for a category.
 
 **Key points**:
 - Note: If editing the razor pages, will have to add `AddRazorRuntimeCompilation()` to show the immediate reflection of changes during development without having to restart the app. If this does not appear - make sure you have the "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" NuGet package.
-- Bootswatch creates themes from bootstrap, which will help with styling - will skip this section of the project.
+- Bootswatch creates themes from bootstrap, which will help with styling - will skip this section of the project. Can also get icons now from bootstrap.
+- Need to create a new GET action (to get data and display it in the views) and create a view as was done in [Dealing with the Category Controller](#dealing-with-the-category-controller).
+- If you are not passing anything inside the controller, then just put `@model Category` at the top of the razor page where the model of the data you'll be collecting on the page and can use tag helpers to find everything.
+- Tag helpers in forms consist of `asp-for` that matches the class attribute from the model.
+- `<form>` uses `method="post"` to submit data so it can be used, whether saving it in the Database or conducting some operation.
+- For post actions, you need to include the `[HttpPost]` attribute, so the system knows its a post action.
+
+### Validation
+Details of validation on server side and client side.
+
+**Relevant Related points**:
+- For post methods, add `[ValidateAntiForgeryToken]` above the function, which prevents Cross Site Request Forgery (CSRF) attacks. Inside any forms, a unique token to each user session and form will be automatically injected via a hidden field and is sent with the POST request. ASP.NET Core checks if the token in the form matches the one the server issued when rendering the form.
+- When adding to the database, `_db.Categories.Add(obj);`gets, within the post method, the object details and creates an entity inside the relevant table. It is not pushed to the database. In order to do this, add `_db.SaveChanges();` after the add command to push the changes.
+- Can redirect a form submission with an action with `return RedirectToAction("Index");` - it assumes the index is of the same class, but if it isn't add a second string parameter which includes the name of the controller/class.
+
+**Key points for prepping the models**:
+- To check if every answer is valid in a form e.g. to catch empty text boxes for required form entries, add `ModelState.IsValid` in an `if` statement with all the form items wrapped inside.
+- If a form requires a value, add a span beneath the text box `<span asp-validation-for="DisplayOrder" class="text-danger"></span>` and include the attribute `asp-validation-for` with the class attribute. If the user leaves it blank, then it throws an error if the form is submitted without it.
