@@ -40,5 +40,9 @@ public class CategoryController : Controller
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+        else
+        {
+            return null;
+        }
     }
 }
