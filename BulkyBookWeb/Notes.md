@@ -125,7 +125,7 @@ Details of how to use entity framework core to deal with data.
 Details of how to create a view for a category.
 
 **Key points**:
-- Note: If editing the razor pages, will have to add `AddRazorRuntimeCompilation()` to show the immediate reflection of changes during development without having to restart the app. If this does not appear - make sure you have the "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" NuGet package.
+- Note: If editing the razor pages, will have to add `AddRazorRuntimeCompilation()` to show the immediate reflection of changes during development without having to restart the app. If this does not appear - make sure you have the "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" NuGet package. Download the compatible version for your .Net version and if there is an issue with your package source manager, in the package source, turn off the offline packages, as this could be blocking you from donwloading the depricated package.
 - Bootswatch creates themes from bootstrap, which will help with styling - will skip this section of the project. Can also get icons now from bootstrap.
 - Need to create a new GET action (to get data and display it in the views) and create a view as was done in [Dealing with the Category Controller](#dealing-with-the-category-controller).
 - If you are not passing anything inside the controller, then just put `@model Category` at the top of the razor page where the model of the data you'll be collecting on the page and can use tag helpers to find everything.
@@ -144,3 +144,19 @@ Details of validation on server side and client side.
 **Key points for prepping the models**:
 - To check if every answer is valid in a form e.g. to catch empty text boxes for required form entries, add `ModelState.IsValid` in an `if` statement with all the form items wrapped inside.
 - If a form requires a value, add a span beneath the text box `<span asp-validation-for="DisplayOrder" class="text-danger"></span>` and include the attribute `asp-validation-for` with the class attribute. If the user leaves it blank, then it throws an error if the form is submitted without it.
+- Adding a div like so `<div asp-validation-summary="All"></div>` to a form summarises all the missing items in a form if the user tries to submit it.
+- For throwing an error for inputted values, can capture the state of the input like so `ModelState.AddModelError("CustomError", "");`. Any error has a unique key to find the error and the second parameter is the outputted value to the user.
+- These are server side validations and will appear when the page is refreshed automatically. In order to prvent the refresh, they need to be set up client side. 
+- In order to do client side validations, need to include the following partial view `_ValidationScriptsPartial.cshtml` where it is common convention to name a partial score with an underscore at the start.
+- For a partial view to be included in your page, add `<partial name="_ValidationScriptsPartial"/>` to the end fo your html page with the specific partial view. However there are scripts within the partial view, so will need to include the `partial` tag within a `section` as seen in the `Create.cshtml` file. 
+- As the validation in the form shows the actual attribute names, add an attribute declaration like `[DisplayName("Display Order")]` above the attribute in the model class as it'll show the preferred name for any validation issues.
+- For all the possible attribute declarations, find them [here](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-8.0).
+
+### Editing and Deleting 
+Details of how to edit and delete a view for a category.
+
+**Key points**:
+- `Edit` methods have been added to the controller. Where an id is inputted the first time to see if the id exists. Possible options are included in the section.
+- Instead of Using the `Create.cshtml` view, duplicate it and create one for editing called `Edit.cshtml`.
+- In the edit file, make sure the form knows what file it is speaking to by adding `asp-action="Edit"` to the top of the file.
+- In the `index.cshtml` file of the Category section, add a link to the edit controls like so `<a asp-asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id">Edit</a>`, where if you type in `asp-route...` you can put in the name of the inputted variable in the `Edit` function and then tie it to the variable.
