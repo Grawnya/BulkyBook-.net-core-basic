@@ -89,24 +89,53 @@ public class CategoryController : Controller
     {
         if (obj.Name == obj.DisplayOrder.ToString())
         {
-            // dictionary holds the state of the model binding process, including any validation errors, 
-            // and is used to provide feedback to the user if there are issues with their input.
             ModelState.AddModelError("CustomError", "The DisplayOrder cannot match the name.");
-            // "CustomError": This is the key for the error message, which could be any string that you choose, 
-            // though it's generally good to use something descriptive.
-            // "": This is an empty string as the error message, meaning no visible feedback will be provided 
-            // to the user. Usually, this would be a descriptive message, such as "Please provide a valid value."
         }
         if (ModelState.IsValid)
         {
-            _db.Categories.Add(obj);
+            _db.Categories.Update(obj); // given method in EF (Entity Framework) Core - the successor to EF
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-        else
-        {
-            return null;
-        }
+        return View(obj);
     }
     #endregion
+
+    #region Delete Methods    
+    // GET
+    public IActionResult Delete(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+
+        //stays the same for the delete method as we want to retrieve the data in this scenario, but not often would you show this in a form
+        var categoryFromDb = _db.Categories.Find(id);
+
+        if (categoryFromDb == null) 
+        {
+            return NotFound();
+        }
+
+        return View(categoryFromDb);
+    }
+    
+    // POST
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeletePOST(int? id) // could also pass the obj through here
+    {
+        // when first running this the value is null, as all the fields are disabled - will add an extra input for the id
+        var obj = _db.Categories.Find(id);
+        if (obj == null)
+        {
+            return NotFound();
+        }
+        _db.Categories.Remove(obj);
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+    #endregion
+
 }
