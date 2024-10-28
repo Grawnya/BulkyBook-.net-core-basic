@@ -49,6 +49,7 @@ public class CategoryController : Controller
         {
             _db.Categories.Add(obj);
             _db.SaveChanges();
+            TempData["success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
         else
@@ -95,6 +96,7 @@ public class CategoryController : Controller
         {
             _db.Categories.Update(obj); // given method in EF (Entity Framework) Core - the successor to EF
             _db.SaveChanges();
+            TempData["success"] = "Category edited successfully";
             return RedirectToAction("Index");
         }
         return View(obj);
@@ -134,6 +136,7 @@ public class CategoryController : Controller
         }
         _db.Categories.Remove(obj);
         _db.SaveChanges();
+        TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index");
     }
     #endregion

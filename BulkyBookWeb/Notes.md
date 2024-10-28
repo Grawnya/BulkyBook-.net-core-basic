@@ -15,6 +15,11 @@
    * [Entity Framework Core](#entity-framework-core)
    * [Dealing with the Category View](#dealing-with-the-category-view)
    * [Validation](#validation)
+   * [Editing and Deleting](#editing-and-deleting)
+* [Alerts](#alerts)
+   * [Dealing with the Tempdata](#dealing-with-the-tempdata)
+* [Notes](#notes)
+   * [Scaffolding CRUD](#scaffolding-crud)
 
 ---
 
@@ -163,3 +168,21 @@ Details of how to edit and delete a view for a category.
 - To update, use `.Update(obj)`, which automatically processes any update in data, by finding the object's primary key and update nay property that has changed. Remember to restart the app, since changes were made to the controller.
 - To delete, use `.Remove(obj)` and copy the edit page, while tailoring it for delete functionality. If form has all fields disabled, then add an input like so `<input asp-asp-for="Id" hidden>` as the identifier for the input of the `DeletePOST` method.
 - The view page knows that for the form, a post method is required. If the name is not straightforward, you can give it a nicknae like so `ActionName("Delete")`, which makes it easier to use a blanket term for all get, post methods etc. and this should match the name in the form action of the delete page.
+
+ Alerts
+### Dealing with the Tempdata
+Details of how to create alerts during a method in a controller with tempdata.
+
+**Key points**:
+- To add a "success" key with a value "Category created successfully", add this line to the POST `Create()` method: `TempData["success"] = "Category created successfully";`.
+- The Tempdata should be extracted at the top of the index view and they should match throughout the page.
+- To save having to put it into every page, just add it to a partial view and call the partial view like so in the views: `<partial name="_Notifications">`.
+- Instead of just inputting html, can use Toastr, but will skim through that for this project, as not relevant currently. Essentially it creates JS alerts and this should be rendered before the body is rendered in `_Layout.cshtml`.
+
+## Extras
+### Scaffolding CRUD
+Details on how to shortvut creating a CRUD app.
+
+**Key points**:
+- On the Controllers folder, right click -> "Add..." and select "MVC Controller with Views, using Entity Framework" and "Add".
+- Select the relevant model ("Category" in this case) on which you want to do some operations and a data context which will be used to access the database ("ApplicationDbContext" in this case).
